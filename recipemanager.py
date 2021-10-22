@@ -16,17 +16,19 @@ db = SQLAlchemy(app)
 
 class Recipe(db.Model):
     Title = db.Column(db.String(80),nullable=False, primary_key=True)
-    #Ingredients = db.Column(db.String(80),nullable=False)
-    #Steps = db.Column(db.String(80),nullable=False)
+    Ingredients = db.Column(db.String(10000),nullable=False)
+    Steps = db.Column(db.String(50000),nullable=False)
     
-    def __repr__(self):
-        return "<Title: {}>".format(self.title)
+    def __init__(self, Title, Ingredients, Steps):
+        self.Title = Title
+        self.Ingredients = Ingredients
+        self.Steps = Steps
 
 
 @app.route("/", methods=["GET","POST"])
 def home():
     if request.form:
-        recipe = Recipe(Title=request.form.get("title"))
+        recipe = Recipe(Title=request.form.get("title"), Ingredients=request.form.get("ingredients"), Steps=request.form.get("steps"))
         db.session.add(recipe)
         db.session.commit()
     recipes = Recipe.query.all()
