@@ -1,0 +1,16 @@
+<html>
+  <body>
+  <h1>Add Recipe</h1>
+    <form method="POST" action="/">
+      <input type="text" name="title"><br>
+      <input type="area" name="ingredients"><br>
+      <input type="area" name="steps"><br>
+      <input type="submit" value="Add">
+    </form>
+    
+    <h1>Recipes</h1>
+    {% for recipe in recipes %}
+        <h2>{{ recipe.title }}</h2>
+    {% endfor %}
+  </body>
+</html>
