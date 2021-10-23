@@ -1,1 +1,1 @@
-web: gunicorn app:recipemanager
+web: gunicorn app:app
