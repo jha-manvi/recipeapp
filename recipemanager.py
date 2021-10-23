@@ -5,6 +5,7 @@ from flask import render_template
 from flask import request
 from flask import url_for
 from flask import redirect
+from flask import flash
 
 from flask_sqlalchemy import SQLAlchemy
 
@@ -13,13 +14,14 @@ database_file = "sqlite:///{}".format(os.path.join(project_dir, "recipedatabase.
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = database_file
+app.config['SECRET_KEY'] = "secret"
 
 db = SQLAlchemy(app)
 
 class Recipe(db.Model):
-    Title = db.Column(db.String(80),nullable=False, primary_key=True)
-    Ingredients = db.Column(db.String(10000),nullable=False)
-    Steps = db.Column(db.String(50000),nullable=False)
+    Title = db.Column(db.String(80), primary_key=True)
+    Ingredients = db.Column(db.String(10000))
+    Steps = db.Column(db.String(50000))
     
     def __init__(self, Title, Ingredients, Steps):
         self.Title = Title
@@ -27,15 +29,29 @@ class Recipe(db.Model):
         self.Steps = Steps
         
 
-@app.route("/", methods=["GET","POST"])
+@app.route("/", methods=['GET','POST'])
 def home():
-    if request.form:
-        recipe = Recipe(Title=request.form.get("title"), Ingredients=request.form.get("ingredients"), Steps=request.form.get("steps"))
-        db.session.add(recipe)
-        db.session.commit()
-        return redirect(url_for('show_all'))
+     
+    if request.method == 'POST':
+        title = request.form.get('title')
+        ingredients = request.form.get('ingredients')
+        steps = request.form.get('steps')
+        
+        if ingredients == "" or steps == "" :
+                flash('Please enter all the fields !')
+         
+        else:
+                recipe = Recipe(title, ingredients, steps)
+                        
+        
+                db.session.add(recipe)
+                db.session.commit()
+                flash('Recipe was successfully added !!')
+        #return redirect(url_for('show_all'))
     recipes = Recipe.query.all()
     return render_template("home.html", recipes=recipes )
+    
+    
 
 @app.route("/show")
 def show_all():
