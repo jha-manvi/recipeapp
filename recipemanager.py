@@ -3,6 +3,8 @@ import os
 from flask import Flask
 from flask import render_template
 from flask import request
+from flask import url_for
+from flask import redirect
 
 from flask_sqlalchemy import SQLAlchemy
 
@@ -23,7 +25,7 @@ class Recipe(db.Model):
         self.Title = Title
         self.Ingredients = Ingredients
         self.Steps = Steps
-
+        
 
 @app.route("/", methods=["GET","POST"])
 def home():
@@ -31,8 +33,13 @@ def home():
         recipe = Recipe(Title=request.form.get("title"), Ingredients=request.form.get("ingredients"), Steps=request.form.get("steps"))
         db.session.add(recipe)
         db.session.commit()
+        return redirect(url_for('show_all'))
     recipes = Recipe.query.all()
     return render_template("home.html", recipes=recipes )
+
+@app.route("/show")
+def show_all():
+    return render_template("show_all.html",Rec = Recipe.query.all())
 
 if __name__ == "__main__":
     app.run(debug=True)
