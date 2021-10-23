@@ -3,8 +3,6 @@ import os
 from flask import Flask
 from flask import render_template
 from flask import request
-from flask import url_for
-from flask import redirect
 from flask import flash
 
 from flask_sqlalchemy import SQLAlchemy
@@ -37,7 +35,7 @@ def home():
         ingredients = request.form.get('ingredients')
         steps = request.form.get('steps')
         
-        if ingredients == "" or steps == "" :
+        if ingredients == "" or steps == "" or title == "" :
                 flash('Please enter all the fields !')
          
         else:
