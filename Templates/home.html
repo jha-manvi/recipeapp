@@ -1,7 +1,14 @@
 <html>
   <body>
   <h1>Welcome to the Recipe App</h1>
-    <form method="POST" action="/">
+  
+  {%- for category, message in get_flashed_messages(with_categories = true) %}
+         <div class = "alert alert-danger">
+           <h2><font color="red"> {{ message }} </font></h2>
+         </div>
+      {%- endfor %}
+  
+    <form method="POST" action= "{{ request.path }}">
       <div class="form-group" align="center">
           <label for="title"><br>Title<br></label>
           <input type="text" name="title" placeholder="Enter Title">
@@ -20,9 +27,3 @@
       </div>
     </form>
     
- <!--   <h1>Recipes</h1> -->
- <!--     {% for recipe in recipes %}
-        <h2>{{ recipe.title }}</h2>
-    {% endfor %}
-  </body>
-</html> -->
