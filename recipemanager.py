@@ -34,9 +34,13 @@ def home():
         title = request.form.get('title')
         ingredients = request.form.get('ingredients')
         steps = request.form.get('steps')
+        title_check = Recipe.query.filter_by(Title=title).first()
         
         if ingredients == "" or steps == "" or title == "" :
                 flash('Please enter all the fields !')
+                
+        elif title_check:
+                flash('Recipe already exists !')
          
         else:
                 recipe = Recipe(title, ingredients, steps)
