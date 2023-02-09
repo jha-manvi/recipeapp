@@ -1,1 +1,1 @@
-web: gunicorn dpsrecipeapp: app
+web: gunicorn app: herokuapps
