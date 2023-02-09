@@ -1,1 +1,1 @@
-web: gunicorn app: herokuapps
+web: gunicorn app:app
